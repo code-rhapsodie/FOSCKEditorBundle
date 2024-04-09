@@ -13,6 +13,7 @@
 namespace FOS\CKEditorBundle\Renderer;
 
 use FOS\CKEditorBundle\Builder\JsonBuilder;
+use FOS\CKEditorBundle\Installer\CKEditorInstaller;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -75,6 +76,11 @@ final class CKEditorRenderer implements CKEditorRendererInterface
         return $this->fixPath($basePath);
     }
 
+    public function renderTranslationPath(string $basePath): string
+    {
+        return $this->renderBasePath($basePath).'translations/'.$this->getLanguage().'.js';
+    }
+
     public function renderJsPath(string $jsPath): string
     {
         return $this->fixPath($jsPath);
@@ -96,9 +102,38 @@ final class CKEditorRenderer implements CKEditorRendererInterface
         $builder = $this->jsonBuilder->reset()->setValues($config);
         $this->fixConfigEscapedValues($builder, $config);
 
+        if (isset($config['build']) && $config['build']) {
+            $release = $config['build'];
+        } else {
+            $release = CKEditorInstaller::RELEASE_CLASSIC;
+        }
+
+        switch ($release) {
+            case CKEditorInstaller::RELEASE_CLASSIC:
+                $name = 'ClassicEditor';
+                break;
+            case CKEditorInstaller::RELEASE_BALLOON:
+            case CKEditorInstaller::RELEASE_BALLOON_BLOCK:
+                $name = 'BalloonEditor';
+                break;
+            case CKEditorInstaller::RELEASE_INLINE:
+                $name = 'InlineEditor';
+                break;
+            case CKEditorInstaller::RELEASE_DOCUMENT:
+                $name = 'DecoupledEditor';
+                break;
+            case CKEditorInstaller::RELEASE_CUSTOM:
+                // todo
+                $name = 'todo';
+                break;
+            default:
+                $name = null;
+        }
         $widget = sprintf(
-            'CKEDITOR.%s("%s", %s);',
-            isset($options['inline']) && $options['inline'] ? 'inline' : 'replace',
+            'CKEDITOR.%s.create(document.querySelector("#%s"), %s).catch((error) => {
+            console.error(error);
+        });',
+            $name,
             $id,
             $this->fixConfigConstants($builder->build())
         );
