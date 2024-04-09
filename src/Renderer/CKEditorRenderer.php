@@ -150,6 +150,9 @@ final class CKEditorRenderer implements CKEditorRendererInterface
 
     public function renderDestroy(string $id): string
     {
+        // TODO : FIX IT FOR CKEditor 5
+        return '';
+
         return sprintf(
             'if (CKEDITOR.instances["%1$s"]) { '.
             'CKEDITOR.instances["%1$s"].destroy(true); '.
@@ -161,6 +164,9 @@ final class CKEditorRenderer implements CKEditorRendererInterface
 
     public function renderPlugin(string $name, array $plugin): string
     {
+        // TODO : FIX IT FOR CKEditor 5
+        return '';
+
         return sprintf(
             'CKEDITOR.plugins.addExternal("%s", "%s", "%s");',
             $name,
@@ -171,6 +177,9 @@ final class CKEditorRenderer implements CKEditorRendererInterface
 
     public function renderStylesSet(string $name, array $stylesSet): string
     {
+        // TODO : FIX IT FOR CKEditor 5
+        return '';
+
         return sprintf(
             'if (CKEDITOR.stylesSet.get("%1$s") === null) { '.
             'CKEDITOR.stylesSet.add("%1$s", %2$s); '.
@@ -182,6 +191,8 @@ final class CKEditorRenderer implements CKEditorRendererInterface
 
     public function renderTemplate(string $name, array $template): string
     {
+        // TODO : FIX IT FOR CKEditor 5
+        return '';
         if (isset($template['imagesPath'])) {
             $template['imagesPath'] = $this->fixPath($template['imagesPath']);
         }
