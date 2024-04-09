@@ -130,7 +130,7 @@ final class CKEditorRenderer implements CKEditorRendererInterface
                 $name = null;
         }
         $widget = sprintf(
-            'CKEDITOR.%s.create(document.querySelector("#%s"), %s).catch((error) => {
+            '%s.create(document.querySelector("#%s"), %s).catch((error) => {
             console.error(error);
         });',
             $name,

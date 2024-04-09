@@ -33,7 +33,7 @@ final class CKEditorInstaller
 
     public const RELEASE_CUSTOM = 'custom';
 
-    public const VERSION_LATEST = 'latest';
+    public const VERSION_LATEST = '41.2.1';
 
     public const CLEAR_DROP = 'drop';
 
